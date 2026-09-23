@@ -1,17 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
-import { useAuth } from "../../context/AuthContext";
-
-import EditCultivoModal from "../../components/cultivo/EditCultivoModal";
-import AddCultivoModal from "../../components/cultivo/AddCultivoModal";
+import { useAuth } from '@features/auth/context/AuthContext';
+import EditCultivoModal from '@features/cultivos/components/EditCultivoModal';
+import AddCultivoModal from '@features/cultivos/components/AddCultivoModal';
 
 import "./CultivosPage.css";
 
-import {
-  getCultivos,
-  createCultivo,
-  updateCultivo,
-  deleteCultivo
-} from "../../services/cultivos.service";
+import { getCultivos, createCultivo, updateCultivo, deleteCultivo } from '@features/cultivos/api/cultivos.api';
 
 export default function CultivosPage({ onOpenCultivo }) {
   const { user } = useAuth();

@@ -1,4 +1,4 @@
-import { authFetch } from "./authFetch";
+import { authFetch } from '@shared/api/authFetch';
 
 export async function getReportesByCultivo(cultivoId) {
 

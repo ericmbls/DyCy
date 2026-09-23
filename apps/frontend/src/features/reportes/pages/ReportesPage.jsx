@@ -1,22 +1,14 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import {
-  FileText,
-  Download,
-  Share2,
-  Calendar,
-  MapPin,
-  User,
-  Tag
-} from "lucide-react";
-import "./ReportesPage.css";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { FileText, Download, Share2, Calendar, MapPin, User, Tag } from 'lucide-react';
+import './ReportesPage.css';
+
+const API = `${import.meta.env.VITE_API_URL}/reportes`;
 
 export default function ReportesPage() {
   const [reportes, setReportes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("todos");
-
-  const API = "http://localhost:3000/api/reportes";
+  const [filter, setFilter] = useState('todos');
 
   useEffect(() => {
     const fetchReportes = async () => {
@@ -24,7 +16,7 @@ export default function ReportesPage() {
         const repRes = await axios.get(`${API}/list`);
         setReportes(repRes.data || []);
       } catch (err) {
-        console.error("Error cargando reportes", err);
+        console.error('Error cargando reportes', err);
       } finally {
         setLoading(false);
       }
@@ -35,25 +27,21 @@ export default function ReportesPage() {
 
   const descargarReporte = async (id) => {
     try {
-      const res = await axios.get(`${API}/${id}/descargar`, {
-        responseType: "blob"
-      });
-
+      const res = await axios.get(`${API}/${id}/descargar`, { responseType: 'blob' });
       const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
+      const link = document.createElement('a');
       link.href = url;
-      link.setAttribute("download", `reporte-${id}.pdf`);
-
+      link.setAttribute('download', `reporte-${id}.pdf`);
       document.body.appendChild(link);
       link.click();
       link.remove();
     } catch (error) {
-      console.error("Error descargando reporte", error);
+      console.error('Error descargando reporte', error);
     }
   };
 
-  const filteredReportes = filter === "todos" 
-    ? reportes 
+  const filteredReportes = filter === 'todos'
+    ? reportes
     : reportes.filter(rep => rep.type?.toLowerCase() === filter);
 
   if (loading) {
@@ -75,42 +63,15 @@ export default function ReportesPage() {
       </div>
 
       <div className="reportes-filters">
-        <button 
-          className={`filter-chip ${filter === "todos" ? "active" : ""}`}
-          onClick={() => setFilter("todos")}
-        >
-          Todos
-        </button>
-        <button 
-          className={`filter-chip ${filter === "riego" ? "active" : ""}`}
-          onClick={() => setFilter("riego")}
-        >
-          Riego
-        </button>
-        <button 
-          className={`filter-chip ${filter === "fertilizacion" ? "active" : ""}`}
-          onClick={() => setFilter("fertilizacion")}
-        >
-          Fertilización
-        </button>
-        <button 
-          className={`filter-chip ${filter === "plaga" ? "active" : ""}`}
-          onClick={() => setFilter("plaga")}
-        >
-          Plaga
-        </button>
-        <button 
-          className={`filter-chip ${filter === "cosecha" ? "active" : ""}`}
-          onClick={() => setFilter("cosecha")}
-        >
-          Cosecha
-        </button>
-        <button 
-          className={`filter-chip ${filter === "observacion" ? "active" : ""}`}
-          onClick={() => setFilter("observacion")}
-        >
-          Observación
-        </button>
+        {['todos', 'riego', 'fertilizacion', 'plaga', 'cosecha', 'observacion'].map((tipo) => (
+          <button
+            key={tipo}
+            className={`filter-chip ${filter === tipo ? 'active' : ''}`}
+            onClick={() => setFilter(tipo)}
+          >
+            {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+          </button>
+        ))}
       </div>
 
       <div className="reportes-stats">
@@ -142,11 +103,6 @@ export default function ReportesPage() {
             <div key={rep.id} className="reporte-card">
               <div className="reporte-card-header">
                 <div className="reporte-type-badge" data-type={rep.type?.toLowerCase()}>
-                  {rep.type === "RIEGO"}
-                  {rep.type === "FERTILIZACION"}
-                  {rep.type === "PLAGA"}
-                  {rep.type === "COSECHA"}
-                  {rep.type === "OBSERVACION"}
                   <span>{rep.type}</span>
                 </div>
                 <span className="reporte-date">
@@ -156,7 +112,7 @@ export default function ReportesPage() {
               </div>
 
               <h3 className="reporte-card-title">{rep.title}</h3>
-              
+
               {rep.cultivo && (
                 <div className="reporte-cultivo">
                   <Tag size={12} />
@@ -171,30 +127,22 @@ export default function ReportesPage() {
               <div className="reporte-card-footer">
                 <div className="reporte-meta">
                   <User size={12} />
-                  <span>{rep.autor || "Sistema"}</span>
+                  <span>{rep.autor || 'Sistema'}</span>
                   <span className="meta-separator">·</span>
-                  <span>{rep.size || "2.4 MB"}</span>
+                  <span>{rep.size || '2.4 MB'}</span>
                 </div>
 
                 <div className="reporte-card-actions">
-                  <button 
-                    className="btn-icon"
-                    onClick={() => descargarReporte(rep.id)}
-                    title="Descargar"
-                  >
+                  <button className="btn-icon" onClick={() => descargarReporte(rep.id)} title="Descargar">
                     <Download size={16} />
                   </button>
-                  <button 
-                    className="btn-icon"
-                    onClick={() => {/* compartir */}}
-                    title="Compartir"
-                  >
+                  <button className="btn-icon" title="Compartir">
                     <Share2 size={16} />
                   </button>
                 </div>
               </div>
 
-              {rep.status === "processing" && (
+              {rep.status === 'processing' && (
                 <div className="reporte-processing">
                   <div className="processing-spinner"></div>
                   <span>Procesando...</span>

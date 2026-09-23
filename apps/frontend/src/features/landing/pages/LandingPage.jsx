@@ -1,51 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Sprout, ShieldCheck, Zap, Menu, X, ChevronRight, 
-  Droplets, Thermometer, Activity, Leaf, CloudSun, BarChart3, Star
+import { useState } from 'react';
+import {
+  Sprout, ShieldCheck, Zap, Menu, X, ChevronRight,
+  Droplets, Thermometer, Activity, Leaf, CloudSun, BarChart3
 } from 'lucide-react';
+import FadeInSection from '@shared/ui/FadeInSection';
 import './LandingPage.css';
 
-const FadeInSection = ({ children, delay = 0, className = '' }) => {
-  const [isVisible, setVisible] = useState(false);
-  const domRef = useRef();
+const LOGIN_TEXT = 'Iniciar Sesión';
 
-  useEffect(() => {
-    const currentRef = domRef.current;
-    if (!currentRef) return;
-    
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setVisible(true);
-            observer.unobserve(currentRef);
-          }
-        });
-      }, 
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-    
-    observer.observe(currentRef);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={domRef}
-      className={`scroll-reveal ${isVisible ? 'is-visible' : ''} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </div>
-  );
-};
-
-const LandingPage = ({ onLoginClick }) => {
+export default function LandingPage({ onLoginClick }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleScroll = (e) => {
-    setScrolled(e.target.scrollTop > 50);
+  const handleScroll = (e) => setScrolled(e.target.scrollTop > 50);
+
+  const handleLogin = () => {
+    setMobileMenuOpen(false);
+    onLoginClick();
   };
 
   return (
@@ -55,39 +26,42 @@ const LandingPage = ({ onLoginClick }) => {
           <Sprout className="logo-icon-svg" />
           <span className="logo-text">Tetlalli</span>
         </div>
-        
+
         <div className="landing-nav-links desktop-only">
           <button className="landing-btn-login" onClick={onLoginClick}>
-            Iniciar Sesión
+            {LOGIN_TEXT}
           </button>
         </div>
 
-        <button 
-          className="mobile-menu-toggle mobile-only" 
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        <button
+          className="mobile-menu-toggle mobile-only"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          aria-label="Alternar menú"
         >
           {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </nav>
 
       <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-        <button className="landing-btn-login fluid" onClick={() => { setMobileMenuOpen(false); onLoginClick(); }}>
-          Iniciar Sesión
+        <button className="landing-btn-login fluid" onClick={handleLogin}>
+          {LOGIN_TEXT}
         </button>
       </div>
 
       <main className="landing-main">
         <section className="landing-hero hero-centered">
-          <div className="hero-blob blob-1"></div>
-          <div className="hero-blob blob-2"></div>
-          <div className="hero-blob blob-3"></div>
+          <div className="hero-blob blob-1" />
+          <div className="hero-blob blob-2" />
+          <div className="hero-blob blob-3" />
+
           <div className="hero-content">
             <div className="badge">
               <Zap size={14} className="badge-icon" />
               El Futuro de la Agricultura
             </div>
             <h1 className="hero-title">
-              Cultiva el éxito con <br /><span className="highlight">Inteligencia Agrícola</span>
+              Cultiva el éxito con <br />
+              <span className="highlight">Inteligencia Agrícola</span>
             </h1>
             <p className="hero-subtitle">
               Toma el control total de tus parcelas. Monitorea humedad, temperatura y automatiza procesos
@@ -102,33 +76,33 @@ const LandingPage = ({ onLoginClick }) => {
               </div>
             </div>
           </div>
-          
+
           <div className="hero-visual desktop-only">
             <div className="glass-card main-glass pulse-glow">
-               <div className="glass-header">
-                 <div className="dot red"></div>
-                 <div className="dot yellow"></div>
-                 <div className="dot green"></div>
-                 <span className="glass-title">Visor de Cultivo</span>
-               </div>
-               <div className="glass-body">
-                 <div className="eco-chart">
-                   <div className="eco-bar e1"><Droplets size={14}/><span>Humedad Óptima</span></div>
-                   <div className="eco-bar e2"><Thermometer size={14}/><span>Temperatura Ideal</span></div>
-                   <div className="eco-bar e3"><Activity size={14}/><span>Salud General</span></div>
-                 </div>
-                 <div className="mock-info">
-                   <div className="info-line w-full"></div>
-                   <div className="info-line w-half"></div>
-                 </div>
-               </div>
+              <div className="glass-header">
+                <div className="dot red" />
+                <div className="dot yellow" />
+                <div className="dot green" />
+                <span className="glass-title">Visor de Cultivo</span>
+              </div>
+              <div className="glass-body">
+                <div className="eco-chart">
+                  <div className="eco-bar e1"><Droplets size={14} /><span>Humedad Óptima</span></div>
+                  <div className="eco-bar e2"><Thermometer size={14} /><span>Temperatura Ideal</span></div>
+                  <div className="eco-bar e3"><Activity size={14} /><span>Salud General</span></div>
+                </div>
+                <div className="mock-info">
+                  <div className="info-line w-full" />
+                  <div className="info-line w-half" />
+                </div>
+              </div>
             </div>
-            
+
             <div className="floating-badge badge-1">
               <Leaf size={18} /> Crecimiento +15%
             </div>
             <div className="floating-badge badge-2">
-              <Droplets size={18} /> Riego Optimo
+              <Droplets size={18} /> Riego Óptimo
             </div>
             <div className="floating-badge badge-3">
               <Zap size={18} /> Alerta Activa
@@ -142,23 +116,29 @@ const LandingPage = ({ onLoginClick }) => {
               <div className="text-center">
                 <span className="section-badge">Proceso Simple</span>
                 <h2 className="section-title">¿Cómo funciona?</h2>
-                <p className="section-desc">Tres sencillos pasos para modernizar y potenciar la gestión de tu terreno.</p>
+                <p className="section-desc">
+                  Tres sencillos pasos para modernizar y potenciar la gestión de tu terreno.
+                </p>
               </div>
             </FadeInSection>
-            
+
             <div className="steps-wrapper">
               <FadeInSection delay={100} className="step-item">
                 <div className="step-number">1</div>
                 <h3>Regístrate</h3>
                 <p>Crea tu cuenta de productor y configura los datos generales de tu finca de manera rápida y segura.</p>
               </FadeInSection>
-              <div className="step-line desktop-only"></div>
+
+              <div className="step-line desktop-only" />
+
               <FadeInSection delay={300} className="step-item">
                 <div className="step-number">2</div>
                 <h3>Añade Parcelas</h3>
                 <p>Registra tus cultivos y repártelos en zonas operativas con tecnología satelital integrada.</p>
               </FadeInSection>
-              <div className="step-line desktop-only"></div>
+
+              <div className="step-line desktop-only" />
+
               <FadeInSection delay={500} className="step-item">
                 <div className="step-number">3</div>
                 <h3>Optimiza</h3>
@@ -173,10 +153,13 @@ const LandingPage = ({ onLoginClick }) => {
             <div className="features-head">
               <span className="section-badge">Herramientas Avanzadas</span>
               <h2 className="section-title">Potencia cada métrica del campo</h2>
-              <p className="section-desc">Olvídate de las conjeturas. Usa datos de alta precisión para reducir tiempos y aumentar permanentemente la calidad final.</p>
+              <p className="section-desc">
+                Olvídate de las conjeturas. Usa datos de alta precisión para reducir tiempos y aumentar
+                permanentemente la calidad final.
+              </p>
             </div>
           </FadeInSection>
-          
+
           <div className="features-grid">
             <FadeInSection delay={100}>
               <div className="feature-card glass-morph">
@@ -207,7 +190,7 @@ const LandingPage = ({ onLoginClick }) => {
                 </ul>
               </div>
             </FadeInSection>
-            
+
             <FadeInSection delay={300}>
               <div className="feature-card glass-morph">
                 <div className="feature-icon-wrapper">
@@ -227,13 +210,16 @@ const LandingPage = ({ onLoginClick }) => {
 
         <section className="landing-cta">
           <div className="cta-shapes">
-            <div className="shape shape-1"></div>
-            <div className="shape shape-2"></div>
+            <div className="shape shape-1" />
+            <div className="shape shape-2" />
           </div>
           <FadeInSection>
             <div className="cta-content">
               <h2>¿Listo para revolucionar tu campo?</h2>
-              <p>Únete a la nueva era tecnológica con Tetlalli. Simplifica tus procesos y mejora la rentabilidad de tu tierra hoy.</p>
+              <p>
+                Únete a la nueva era tecnológica con Tetlalli. Simplifica tus procesos y mejora la
+                rentabilidad de tu tierra hoy.
+              </p>
               <button className="cta-btn btn-primary" onClick={onLoginClick}>
                 Comienza Ahora
               </button>
@@ -249,6 +235,4 @@ const LandingPage = ({ onLoginClick }) => {
       </footer>
     </div>
   );
-};
-
-export default LandingPage;
+}

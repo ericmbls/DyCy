@@ -1,17 +1,17 @@
-import { useState } from "react";
-import logo from "../../assets/logo.png";
-import "./LoginPage.css";
-import { loginUsuario, registerUsuario } from "../../services/usuarios.service";
-import { useAuth } from "../../context/AuthContext";
+import { useState } from 'react';
+import logo from '@/assets/logo.png';
+import { loginUsuario, registerUsuario } from '@features/usuarios/api/usuarios.api';
+import { useAuth } from '@features/auth/context/AuthContext';
+import './LoginPage.css';
 
 export default function LoginPage({ setIsLoggedIn }) {
   const [isLoginActive, setIsLoginActive] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
-    nombre: "",
-    email: "",
-    password: ""
+    nombre: '',
+    email: '',
+    password: ''
   });
 
   const { login } = useAuth();
@@ -19,23 +19,23 @@ export default function LoginPage({ setIsLoggedIn }) {
   const handleInputChange = ({ target }) => {
     const { name, value } = target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrorMessage("");
+    setErrorMessage('');
   };
 
   const validateForm = () => {
     if (!isLoginActive && formData.nombre.trim().length < 2) {
-      setErrorMessage("El nombre debe tener al menos 2 caracteres");
+      setErrorMessage('El nombre debe tener al menos 2 caracteres');
       return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setErrorMessage("Ingresa un email válido");
+      setErrorMessage('Ingresa un email válido');
       return false;
     }
 
     if (formData.password.length < 6) {
-      setErrorMessage("La contraseña debe tener al menos 6 caracteres");
+      setErrorMessage('La contraseña debe tener al menos 6 caracteres');
       return false;
     }
 
@@ -49,7 +49,7 @@ export default function LoginPage({ setIsLoggedIn }) {
     if (!validateForm()) return;
 
     setLoading(true);
-    setErrorMessage("");
+    setErrorMessage('');
 
     try {
       if (isLoginActive) {
@@ -57,24 +57,19 @@ export default function LoginPage({ setIsLoggedIn }) {
           email: formData.email,
           password: formData.password
         });
-
         login(res.access_token, res.user);
-        setIsLoggedIn(true);
       } else {
         const res = await registerUsuario({
           name: formData.nombre,
           email: formData.email,
           password: formData.password
         });
-
         login(res.access_token, res.user);
-        setIsLoggedIn(true);
       }
+      setIsLoggedIn(true);
     } catch (error) {
       setErrorMessage(
-        error.response?.data?.message ||
-        error.message ||
-        "Error al autenticar"
+        error.response?.data?.message || error.message || 'Error al autenticar'
       );
     } finally {
       setLoading(false);
@@ -83,8 +78,8 @@ export default function LoginPage({ setIsLoggedIn }) {
 
   const toggleMode = () => {
     setIsLoginActive(!isLoginActive);
-    setFormData({ nombre: "", email: "", password: "" });
-    setErrorMessage("");
+    setFormData({ nombre: '', email: '', password: '' });
+    setErrorMessage('');
   };
 
   return (
@@ -97,20 +92,20 @@ export default function LoginPage({ setIsLoggedIn }) {
         </div>
       ))}
 
-      <div className={`cards-container ${isLoginActive ? "login-mode" : "register-mode"}`}>
+      <div className={`cards-container ${isLoginActive ? 'login-mode' : 'register-mode'}`}>
         <div className="welcome-card">
           <div className="welcome-content">
             <img src={logo} alt="logo" className="logo" />
             <h2 className="welcome-title">
-              {isLoginActive ? "¡Hola!" : "¡Bienvenido!"}
+              {isLoginActive ? '¡Hola!' : '¡Bienvenido!'}
             </h2>
             <p className="welcome-text">
               {isLoginActive
-                ? "Regístrate con tus datos personales para usar todas las funciones del sistema"
-                : "Ingresa tus datos personales para acceder a tu cuenta"}
+                ? 'Regístrate con tus datos personales para usar todas las funciones del sistema'
+                : 'Ingresa tus datos personales para acceder a tu cuenta'}
             </p>
             <button onClick={toggleMode} className="welcome-button">
-              {isLoginActive ? "Registrarse" : "Iniciar sesión"}
+              {isLoginActive ? 'Registrarse' : 'Iniciar sesión'}
             </button>
           </div>
         </div>
@@ -154,12 +149,8 @@ export default function LoginPage({ setIsLoggedIn }) {
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className="submit-button"
-                    disabled={loading}
-                  >
-                    {loading ? "Cargando..." : "INICIAR SESIÓN"}
+                  <button type="submit" className="submit-button" disabled={loading}>
+                    {loading ? 'Cargando...' : 'INICIAR SESIÓN'}
                   </button>
                 </form>
               </>
@@ -207,12 +198,8 @@ export default function LoginPage({ setIsLoggedIn }) {
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className="submit-button"
-                    disabled={loading}
-                  >
-                    {loading ? "Cargando..." : "REGISTRARSE"}
+                  <button type="submit" className="submit-button" disabled={loading}>
+                    {loading ? 'Cargando...' : 'REGISTRARSE'}
                   </button>
                 </form>
               </>

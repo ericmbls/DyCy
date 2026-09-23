@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Globe, Sliders, Shield, Bell, Lock, Cpu, Eye } from 'lucide-react';
-import Header from '../../components/common/Header';
 import './AjustesPage.css';
 
 const TABS = [

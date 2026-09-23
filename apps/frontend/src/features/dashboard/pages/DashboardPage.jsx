@@ -9,7 +9,7 @@ import {
   Sun
 } from "lucide-react";
 
-import AddCultivoModal from "../../components/cultivo/AddCultivoModal";
+import AddCultivoModal from '@features/cultivos/components/AddCultivoModal';
 import "./DashboardPage.css";
 
 export default function DashboardPage() {

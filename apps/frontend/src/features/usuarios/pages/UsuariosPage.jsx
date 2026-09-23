@@ -1,16 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Trash2, Search, Plus, Edit3, MoreVertical, Lock, Unlock } from 'lucide-react';
+import { getUsuarios, deleteUsuario, createUsuarioAdmin, updateUsuario } from '@features/usuarios/api/usuarios.api';
+import AddUsuarioModal from '@features/usuarios/components/AddUsuarioModal';
+import EditUsuarioModal from '@features/usuarios/components/EditUsuarioModal';
 import './UsuariosPage.css';
-
-import {
-  getUsuarios,
-  deleteUsuario,
-  createUsuarioAdmin,
-  updateUsuario
-} from "../../services/usuarios.service";
-
-import AddUsuarioModal from "../../components/usuarios/AddUsuarioModal";
-import EditUsuarioModal from "../../components/usuarios/EditUsuarioModal";
 
 export default function UsuariosPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,7 +20,7 @@ export default function UsuariosPage() {
       const data = await getUsuarios();
       setUsers(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.error("Error cargando usuarios:", err);
+      console.error('Error cargando usuarios:', err);
       setUsers([]);
     }
   };
@@ -37,7 +30,7 @@ export default function UsuariosPage() {
       await deleteUsuario(id);
       setUsers(prev => prev.filter(u => u.id !== id));
     } catch (err) {
-      console.error("Error eliminando usuario:", err);
+      console.error('Error eliminando usuario:', err);
     }
   };
 
@@ -46,7 +39,7 @@ export default function UsuariosPage() {
       const creado = await createUsuarioAdmin(nuevoUsuario);
       setUsers(prev => [...prev, creado]);
     } catch (err) {
-      console.error("Error creando usuario:", err);
+      console.error('Error creando usuario:', err);
     }
   };
 
@@ -56,23 +49,20 @@ export default function UsuariosPage() {
       setUsers(prev => prev.map(u => (u.id === actualizado.id ? actualizado : u)));
       setEditingUser(null);
     } catch (err) {
-      console.error("Error actualizando usuario:", err);
+      console.error('Error actualizando usuario:', err);
     }
   };
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
-      const email = user?.email?.toLowerCase() || "";
-      const role = user?.role?.toLowerCase() || "";
-      return (
-        email.includes(searchTerm.toLowerCase()) ||
-        role.includes(searchTerm.toLowerCase())
-      );
+      const email = user?.email?.toLowerCase() || '';
+      const role = user?.role?.toLowerCase() || '';
+      return email.includes(searchTerm.toLowerCase()) || role.includes(searchTerm.toLowerCase());
     });
   }, [searchTerm, users]);
 
   const getInitials = (email) => {
-    if (!email) return "??";
+    if (!email) return '??';
     return email.slice(0, 2).toUpperCase();
   };
 
@@ -83,7 +73,6 @@ export default function UsuariosPage() {
           <h1 className="page-title">Gestión de Usuarios</h1>
           <p className="page-subtitle">Administrar usuarios, roles y permisos</p>
         </div>
-
         <button className="btn-primary-brown" onClick={() => setIsAddOpen(true)}>
           <Plus size={18} style={{ marginRight: 8 }} />
           Nuevo Usuario
@@ -114,20 +103,20 @@ export default function UsuariosPage() {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers?.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user.id}>
                 <td>
                   <div className="user-cell-profile">
                     <div className="user-avatar-small">{getInitials(user?.email)}</div>
-                    <span>{user?.email || "Sin email"}</span>
+                    <span>{user?.email || 'Sin email'}</span>
                   </div>
                 </td>
-                <td>{user?.role || "user"}</td>
-                <td>{user?.lastActive || "N/A"}</td>
+                <td>{user?.role || 'user'}</td>
+                <td>{user?.lastActive || 'N/A'}</td>
                 <td>
                   <div className="status-cell">
-                    {user?.status === "Activo" ? <Unlock size={14} /> : <Lock size={14} />}
-                    <span>{user?.status || "Activo"}</span>
+                    {user?.status === 'Activo' ? <Unlock size={14} /> : <Lock size={14} />}
+                    <span>{user?.status || 'Activo'}</span>
                   </div>
                 </td>
                 <td>
