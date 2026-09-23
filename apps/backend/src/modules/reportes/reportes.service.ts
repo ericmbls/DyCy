@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "@shared/prisma/prisma.service";
 import { CreateReporteDto } from "./dto/create-reporte.dto";
 import { UpdateReporteDto } from "./dto/update-reporte.dto";
 import PDFDocument from "pdfkit";

@@ -16,9 +16,9 @@ import { extname } from 'path';
 import { CultivosService } from './cultivos.service';
 import { CreateCultivoDto } from './dto/create-cultivo.dto';
 import { UpdateCultivoDto } from './dto/update-cultivo.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RolesGuard } from '../auth/roles.guard';
-import { Role } from '../auth/role.decorator';
+import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@modules/auth/guards/roles.guard';
+import { Role } from '@modules/auth/decorators/role.decorator';
 
 @Controller('cultivos')
 export class CultivosController {

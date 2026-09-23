@@ -9,9 +9,10 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
+;
 import { UsuariosService } from './usuarios.service';
-import { UpdatePreferencesDto } from '../auth/dto/update-preferences.dto';
+import { UpdatePreferencesDto } from '@modules/auth/dto/update-preferences.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

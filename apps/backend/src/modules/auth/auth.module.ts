@@ -4,8 +4,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { StringValue } from 'ms';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
-import { PrismaService } from '../prisma/prisma.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { PrismaService } from '@shared/prisma/prisma.service';
 
 @Module({
   imports: [
