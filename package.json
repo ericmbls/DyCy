@@ -1,0 +1,21 @@
+{
+  "name": "tetlalli",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n BACK,FRONT -c blue,green \"npm:dev:back\" \"npm:dev:front\"",
+    "dev:back": "npm run start:dev --workspace=backend",
+    "dev:front": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=backend && npm run build --workspace=frontend",
+    "build:back": "npm run build --workspace=backend",
+    "build:front": "npm run build --workspace=frontend",
+    "lint": "npm run lint --workspace=backend && npm run lint --workspace=frontend",
+    "format": "npm run format --workspace=backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
